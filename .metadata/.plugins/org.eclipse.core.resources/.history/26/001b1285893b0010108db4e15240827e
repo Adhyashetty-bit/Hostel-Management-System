@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<head>
+    <title>Report Results</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .message {
+            color: red;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>${reportTitle}</h2>
+
+    <c:if test="${not empty message}">
+        <p class="message">${message}</p>
+    </c:if>
+
+    <c:choose>
+        <c:when test="${empty students}">
+            <p>No records found.</p>
+        </c:when>
+        <c:otherwise>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Room Number</th>
+                    <th>Admission Date</th>
+                    <th>Pending Fees</th>
+                </tr>
+                <c:forEach var="student" items="${students}">
+                    <tr>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.roomNumber}</td>
+                        <td>${student.admissionDate}</td>
+                        <td>${student.pendingFees}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:otherwise>
+    </c:choose>
+</body>
+</html>

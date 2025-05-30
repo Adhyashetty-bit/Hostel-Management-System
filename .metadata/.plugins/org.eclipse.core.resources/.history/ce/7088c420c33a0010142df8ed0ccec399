@@ -1,0 +1,149 @@
+<%@ page import="java.util.*, java.text.SimpleDateFormat, com.model.Student, com.dao.HostelDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"], input[type="date"], input[type="submit"] {
+            padding: 8px 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Generate Student Reports</h2>
+
+    <!-- Report: Pending Fees -->
+    <form method="post">
+        <input type="submit" name="reportType" value="Pending Fees">
+    </form>
+
+    <!-- Report: Students by Room Number -->
+    <form method="post">
+        <input type="text" name="roomNumber" placeholder="Enter Room Number" required>
+        <input type="submit" name="reportType" value="By Room Number">
+    </form>
+
+    <!-- Report: Date Range -->
+    <form method="post">
+        <label>From:</label>
+        <input type="date" name="startDate" required>
+        <label>To:</label>
+        <input type="date" name="endDate" required>
+        <input type="submit" name="reportType" value="By Date Range">
+    </form>
+
+    <%
+        HostelDAO dao = new HostelDAO();
+        List<Student> result = null;
+
+        String reportType = request.getParameter("reportType");
+        if ("Pending Fees".equals(reportType)) {
+            result = dao.getStudentsWithPendingFees();
+    %>
+        <h3>Students With Pending Fees</h3>
+    <%
+        } else if ("By Room Number".equals(reportType)) {
+            String room = request.getParameter("roomNumber");
+            result = dao.getStudentsByRoom(room);
+    %>
+        <h3>Students in Room <%= room %></h3>
+    <%
+        } else if ("By Date Range".equals(reportType)) {
+            try {
+                String start = request.getParameter("startDate");
+                String end = request.getParameter("endDate");
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDate = sdf.parse(start);
+                Date endDate = sdf.parse(end);
+
+                result = dao.getStudentsByDateRange(startDate, endDate);
+    %>
+        <h3>Students Admitted from <%= start %> to <%= end %></h3>
+    <%
+            } catch (Exception e) {
+                out.println("<p style='color:red;'>Error parsing dates.</p>");
+            }
+        }
+
+        if (result != null && !result.isEmpty()) {
+    %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Room</th>
+                <th>Admission Date</th>
+                <th>Fees Paid</th>
+                <th>Pending Fees</th>
+            </tr>
+            <%
+                for (Student s : result) {
+            %>
+            <tr>
+                <td><%= s.getStudentID() %></td>
+                <td><%= s.getStudentName() %></td>
+                <td><%= s.getRoomNumber() %></td>
+                <td><%= s.getAdmissionDate() %></td>
+                <td><%= s.getFeesPaid() %></td>
+                <td><%= s.getPendingFees() %></td>
+            </tr>
+            <% } %>
+        </table>
+    <%
+        } else if (reportType != null) {
+            out.println("<p>No records found for the selected report.</p>");
+        }
+    %>
+</div>
+</body>
+</html>

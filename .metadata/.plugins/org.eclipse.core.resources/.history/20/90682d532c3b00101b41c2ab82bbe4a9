@@ -1,0 +1,87 @@
+package com.hostelmanagement.controller;
+
+import com.hostelmanagement.dao.HostelDAO;
+import com.hostelmanagement.model.HostelStudent;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+@WebServlet("/ReportServlet")
+public class ReportServlet extends HttpServlet {
+    private HostelDAO hostelDAO;
+
+    @Override
+    public void init() throws ServletException {
+        hostelDAO = new HostelDAO(); // Make sure this is initialized correctly
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String reportType = request.getParameter("reportType");
+        String roomNumber = request.getParameter("roomNumber");
+        String startDateStr = request.getParameter("startDate");
+        String endDateStr = request.getParameter("endDate");
+
+        List<HostelStudent> resultList = null;
+        String reportTitle = "Student Report";
+
+        try {
+            switch (reportType) {
+                case "all":
+                    resultList = hostelDAO.getAllStudents();
+                    reportTitle = "All Students Report";
+                    break;
+
+                case "roomNumber":
+                    if (roomNumber != null && !roomNumber.trim().isEmpty()) {
+                        resultList = hostelDAO.getStudentsByRoom(roomNumber.trim());
+                        reportTitle = "Students in Room: " + roomNumber;
+                    } else {
+                        request.setAttribute("error", "Room number must be provided.");
+                    }
+                    break;
+
+                case "admissionDate":
+                    if (startDateStr != null && endDateStr != null &&
+                            !startDateStr.trim().isEmpty() && !endDateStr.trim().isEmpty()) {
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                        Date start = sdf.parse(startDateStr.trim());
+                        Date end = sdf.parse(endDateStr.trim());
+
+                        java.sql.Date startDate = new java.sql.Date(start.getTime());
+                        java.sql.Date endDate = new java.sql.Date(end.getTime());
+
+                        resultList = hostelDAO.getStudentsByDateRange(startDate, endDate);
+                        reportTitle = "Students admitted between " + startDateStr + " and " + endDateStr;
+                    } else {
+                        request.setAttribute("error", "Start and end dates must be provided.");
+                    }
+                    break;
+
+                default:
+                    request.setAttribute("error", "Invalid report type selected.");
+            }
+
+        } catch (ParseException e) {
+            request.setAttribute("error", "Date format error: " + e.getMessage());
+        } catch (Exception e) {
+            request.setAttribute("error", "An unexpected error occurred: " + e.getMessage());
+        }
+
+        // Set attributes and forward to JSP
+        request.setAttribute("students", resultList);
+        request.setAttribute("reportTitle", reportTitle);
+
+        request.getRequestDispatcher("report.jsp").forward(request, response);
+    }
+}

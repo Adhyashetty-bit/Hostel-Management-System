@@ -1,0 +1,94 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            padding: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h2>Add New Student</h2>
+    <div class="form-container">
+        <form action="StudentAddServlet" method="post">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="regno">Registration Number:</label>
+            <input type="text" id="regno" name="regno" required>
+
+            <label for="roomno">Room Number:</label>
+            <input type="text" id="roomno" name="roomno" required>
+
+            <label for="block">Block:</label>
+            <input type="text" id="block" name="block" required>
+
+            <label for="course">Course:</label>
+            <input type="text" id="course" name="course" required>
+
+            <label for="branch">Branch:</label>
+            <input type="text" id="branch" name="branch" required>
+
+            <label for="year">Year:</label>
+            <select id="year" name="year" required>
+                <option value="">-- Select Year --</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+            </select>
+
+            <label for="contact">Contact Number:</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <input type="submit" value="Add Student">
+        </form>
+    </div>
+</body>
+</html>

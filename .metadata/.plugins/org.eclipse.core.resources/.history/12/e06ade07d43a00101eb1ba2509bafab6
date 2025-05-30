@@ -1,0 +1,93 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Report Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f4f6f7;
+        }
+
+        .no-data {
+            margin-top: 20px;
+            font-style: italic;
+            color: #888;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a.button:hover {
+            background-color: #1f618d;
+        }
+    </style>
+</head>
+<body>
+<h2>${reportTitle}</h2>
+
+<c:choose>
+    <c:when test="${not empty students}">
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Room</th>
+                <th>Admission Date</th>
+                <th>Fees Paid</th>
+                <th>Pending Fees</th>
+            </tr>
+            <c:forEach var="student" items="${students}">
+                <tr>
+                    <td>${student.studentID}</td>
+                    <td>${student.studentName}</td>
+                    <td>${student.roomNumber}</td>
+                    <td>${student.admissionDate}</td>
+                    <td>${student.feesPaid}</td>
+                    <td>${student.pendingFees}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:when>
+    <c:otherwise>
+        <p class="no-data">No records found for the selected criteria.</p>
+    </c:otherwise>
+</c:choose>
+
+<a href="report.jsp" class="button">← Back to Reports</a>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hostel Management System - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 6px;
+        }
+
+        a.button:hover {
+            background-color: #1f618d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to Hostel Management System</h1>
+    <a href="report.jsp" class="button">Generate Reports</a>
+</div>
+</body>
+</html>

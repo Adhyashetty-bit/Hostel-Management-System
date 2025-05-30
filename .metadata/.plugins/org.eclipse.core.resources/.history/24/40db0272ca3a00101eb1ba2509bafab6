@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hostel Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2; /* Light gray background */
+            color: #000; /* Black text */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #000; /* Black button */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Hostel Management System</h1>
+    <ul>
+        <li><a href="studentadd.jsp">Add Student</a></li>
+        <li><a href="studentupdate.jsp">Update Student</a></li>
+        <li><a href="studentdelete.jsp">Delete Student</a></li>
+        <li><a href="studentdisplay.jsp">Display Students</a></li>
+        <li><a href="report_form.jsp">Generate Reports</a></li>
+    </ul>
+</body>
+</html>

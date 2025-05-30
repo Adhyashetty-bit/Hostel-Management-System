@@ -1,0 +1,61 @@
+package com.servlet;
+import com.dao.HostelDAO;
+import com.model.Student;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+public class ReportServlet extends HttpServlet{
+	private static final long serialVersionUID = 1L;
+    private HostelDAO hostelDAO;
+
+    public void init() {
+        hostelDAO = new HostelDAO();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            HttpSession session = request.getSession();
+            String reportType = (String) session.getAttribute("reportType");
+            String roomNumber = (String) session.getAttribute("roomNumber");
+            String startDateStr = (String) session.getAttribute("startDate");
+            String endDateStr = (String) session.getAttribute("endDate");
+
+            List<Student> resultList = null;
+
+            switch (reportType) {
+                case "pendingFees":
+                    resultList = hostelDAO.getStudentsWithPendingFees();
+                    break;
+                case "room":
+                    resultList = hostelDAO.getStudentsByRoom(roomNumber);
+                    break;
+                case "dateRange":
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                	Date start = sdf.parse(startDateStr);
+                	Date end = sdf.parse(endDateStr);
+
+                	// Convert java.util.Date to java.sql.Date
+                	java.sql.Date startDate = new java.sql.Date(start.getTime());
+                	java.sql.Date endDate = new java.sql.Date(end.getTime());
+
+                	resultList = hostelDAO.getStudentsByDateRange(startDate, endDate);
+                    break;
+                default:
+                    break;
+            }
+
+            request.setAttribute("reportList", resultList);
+            request.getRequestDispatcher("report_result.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Error generating report: " + e.getMessage());
+            request.getRequestDispatcher("report_result.jsp").forward(request, response);
+        }
+    }
+}

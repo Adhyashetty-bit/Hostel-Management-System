@@ -1,0 +1,58 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Report - Hostel Management System</title>
+</head>
+<body>
+    <h2>Generate Report</h2>
+
+    <form action="report" method="get">
+        <label for="reportType">Select Report Type:</label>
+        <select name="reportType" id="reportType" required onchange="toggleFields()">
+            <option value="">--Select--</option>
+            <option value="byRoom">By Room Number</option>
+            <option value="byDate">By Admission Date Range</option>
+            <option value="byPendingFees">By Pending Fees Status</option>
+        </select>
+
+        <div id="roomNumberDiv" style="display:none; margin-top:10px;">
+            <label for="roomNumber">Room Number:</label>
+            <input type="text" name="roomNumber" id="roomNumber" />
+        </div>
+
+        <div id="dateRangeDiv" style="display:none; margin-top:10px;">
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="startDate" id="startDate" />
+
+            <label for="endDate" style="margin-left:10px;">End Date:</label>
+            <input type="date" name="endDate" id="endDate" />
+        </div>
+
+        <div id="pendingFeesDiv" style="display:none; margin-top:10px;">
+            <label for="pendingStatus">Pending Fees Status:</label>
+            <select name="pendingStatus" id="pendingStatus">
+                <option value="">--Select--</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+            </select>
+        </div>
+
+        <br/><br/>
+        <input type="submit" value="Generate Report" />
+    </form>
+
+    <br/>
+    <a href="index.jsp">Back to Home</a>
+
+    <script>
+        function toggleFields() {
+            var reportType = document.getElementById('reportType').value;
+
+            document.getElementById('roomNumberDiv').style.display = (reportType === 'byRoom') ? 'block' : 'none';
+            document.getElementById('dateRangeDiv').style.display = (reportType === 'byDate') ? 'block' : 'none';
+            document.getElementById('pendingFeesDiv').style.display = (reportType === 'byPendingFees') ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

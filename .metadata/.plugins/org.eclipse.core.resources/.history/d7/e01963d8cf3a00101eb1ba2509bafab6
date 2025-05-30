@@ -1,0 +1,97 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Student" %>
+<html>
+<head>
+    <title>Hostel Management System - Report Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f4f6f7;
+        }
+        .no-data {
+            margin-top: 20px;
+            font-style: italic;
+            color: #888;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.button:hover {
+            background-color: #1f618d;
+        }
+    </style>
+</head>
+<body>
+    <h2>${reportTitle}</h2>
+
+<%
+    List<Student> students = (List<Student>) request.getAttribute("students");
+
+    if (students == null || students.isEmpty()) {
+%>
+    <p class="no-data">No records found for the selected criteria.</p>
+<%
+    } else {
+%>
+    <table>
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Room Number</th>
+                <th>Admission Date</th>
+                <th>Fees Paid</th>
+                <th>Pending Fees</th>
+            </tr>
+        </thead>
+        <tbody>
+<%
+        for (Student s : students) {
+%>
+            <tr>
+                <td><%= s.getStudentID() %></td>
+                <td><%= s.getStudentName() %></td>
+                <td><%= s.getRoomNumber() %></td>
+                <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(s.getAdmissionDate()) %></td>
+                <td><%= String.format("%.2f", s.getFeesPaid()) %></td>
+                <td><%= String.format("%.2f", s.getPendingFees()) %></td>
+            </tr>
+<%
+        }
+%>
+        </tbody>
+    </table>
+<%
+    }
+%>
+
+    <a href="report.jsp" class="button">Back to Reports</a>
+</body>
+</html>

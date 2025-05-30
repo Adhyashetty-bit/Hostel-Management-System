@@ -1,0 +1,108 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Reports - Hostel Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+
+        form {
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleFields() {
+            const type = document.getElementById("reportType").value;
+            document.getElementById("roomSection").style.display = (type === "roomNumber") ? "block" : "none";
+            document.getElementById("dateSection").style.display = (type === "admissionDate") ? "block" : "none";
+        }
+
+        window.onload = function() {
+            toggleFields();
+        };
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>Generate Reports</h2>
+    <form action="ReportServlet" method="get">
+        <label for="reportType">Select Report Type:</label>
+        <select id="reportType" name="reportType" onchange="toggleFields()" required>
+            <option value="">-- Select Report --</option>
+            <option value="pendingFees">Students with Pending Fees</option>
+            <option value="roomNumber">Students in a Particular Room</option>
+            <option value="admissionDate">Students Admitted in a Date Range</option>
+        </select>
+
+        <div id="roomSection" class="hidden">
+            <label for="roomNumber">Room Number:</label>
+            <input type="text" id="roomNumber" name="roomNumber">
+        </div>
+
+        <div id="dateSection" class="hidden">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate">
+        </div>
+
+        <input type="submit" value="Generate Report">
+    </form>
+</div>
+</body>
+</html>
